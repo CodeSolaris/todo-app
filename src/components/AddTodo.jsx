@@ -15,13 +15,12 @@ export const AddTodo = ({ onAddTodo }) => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-6">
-      {/* Добавить задачу */}
       <div className="flex items-center bg-white dark:bg-page-dark rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
         <input
           className="flex-1 p-3 text-gray-700 dark:text-txt-dark bg-transparent outline-none placeholder-gray-400"
           type="text"
           value={text}
-          placeholder="добавить задачу.."
+          placeholder="Add a task..."
           onChange={(e) => setText(e.target.value)}
         />
 
@@ -52,11 +51,10 @@ export const AddTodo = ({ onAddTodo }) => {
           onClick={() => setShowDeadlineInput(true)}
           className="mt-2 text-md text-blue-500 hover:text-blue-700 transition"
         >
-          Добавить deadline
+          Add deadline
         </button>
       )}
 
-      {/* Deadline */}
       {showDeadlineInput && (
         <div className="mt-3 p-3 bg-white dark:bg-page-dark rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-3">
           <label
@@ -83,7 +81,7 @@ export const AddTodo = ({ onAddTodo }) => {
             }}
             className="text-sm text-gray-700 dark:text-txt-dark cursor-pointer"
           >
-            Отмена
+            Cancel
           </button>
         </div>
       )}

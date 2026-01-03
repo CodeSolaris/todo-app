@@ -49,8 +49,8 @@ export const TodoItem = ({ task, onDelete, onToggleComplete }) => {
                   : "text-grey-500"
               }`}
             >
-              создано:{" "}
-              {new Date(task.createdAt).toLocaleString("ru-RU", {
+              Created:{" "}
+              {new Date(task.createdAt).toLocaleString("en-US", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -70,8 +70,8 @@ export const TodoItem = ({ task, onDelete, onToggleComplete }) => {
                   : "text-grey-500"
               }`}
             >
-              сделать до:{" "}
-              {new Date(task.deadline).toLocaleString("ru-RU", {
+              Due by:{" "}
+              {new Date(task.deadline).toLocaleString("en-US", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -83,11 +83,10 @@ export const TodoItem = ({ task, onDelete, onToggleComplete }) => {
         </div>
       </div>
 
-      {/* Delete */}
       <button
         type="button"
         onClick={() => onDelete(task.id)}
-        aria-label="Удалить задачу"
+        aria-label="Delete task"
         className="opacity-0 transition-all duration-300 cursor-pointer text-gray-400 hover:text-red-500 group-hover:opacity-100"
       >
         <svg
