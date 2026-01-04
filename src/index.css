@@ -3,12 +3,15 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --color-btn-dark: #00008b;
-  --color-btn-dark-hv: #0000cd;
-  --color-btn-light: #87ceeb;
-  --color-btn-light-hv: #add8e6;
-  --color-txt-dark: #dedede;
-  --color-txt-light: #333;
-  --color-page-dark: #323232;
-  --color-page-light: #f3f3f3;
+  --color-btn-light: #3b82f6;
+  --color-btn-light-hv: #2563eb;
+
+  --color-btn-dark: #3b82f6;
+  --color-btn-dark-hv: #60a5fa;
+
+  --color-txt-dark: #f9fafb;
+  --color-txt-light: #111827;
+
+  --color-page-dark: #0f172a;
+  --color-page-light: #f3f4f6;
 }
