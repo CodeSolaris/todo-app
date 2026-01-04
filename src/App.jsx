@@ -64,7 +64,7 @@ export function App() {
   const handleAddTodo = async (text, deadline) => {
     const localId = `local_${Date.now()}_${Math.random()
       .toString(36)
-      .substr(2, 9)}`;
+      .slice(2, 11)}`;
     const newTask = {
       id: `temp_${Date.now()}`,
       localId, // Stable ID for React key
@@ -164,6 +164,34 @@ export function App() {
     }
   };
 
+  const handleUpdateTask = async (id, newText, newDeadline) => {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+    if (!taskToUpdate) return;
+
+    const updatedTask = {
+      ...taskToUpdate,
+      text: newText,
+      deadline: newDeadline,
+    };
+
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? updatedTask : task
+    );
+    setTasks(updatedTasks);
+
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      });
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error("Error editing task:", error);
+    }
+  };
   return (
     <div
       data-theme={theme}
@@ -188,6 +216,7 @@ export function App() {
                 setDeleteTaskId(task.id);
               }}
               onToggleComplete={handleToggleComplete}
+              onUpdateTask={handleUpdateTask}
             />
           ))}
         </ul>
