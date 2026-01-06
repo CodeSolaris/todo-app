@@ -10,7 +10,10 @@ const handleResponse = async (response) => {
 
 export const todoService = {
   getAll: async () => {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
     return handleResponse(response);
   },
 

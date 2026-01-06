@@ -21,12 +21,13 @@ export function App() {
     closeConfirmationModal,
     handleDeleteTask,
     handleDeleteCompletedTasks,
+    handleReorderTask,
   } = useTodoManagement();
 
   return (
     <div
       data-theme={theme}
-      className="flex flex-col items-center min-h-screen justify-center bg-page-light dark:bg-page-dark text-txt-light dark:text-txt-dark p-6"
+      className="flex flex-col items-center h-screen overflow-hidden bg-page-light dark:bg-page-dark text-txt-light dark:text-txt-dark p-6 pt-[20vh]"
     >
       <ToggleTheme theme={theme} onToggle={() => toggleTheme(setTheme)} />
       <MainContent
@@ -35,6 +36,7 @@ export function App() {
         handleToggleComplete={handleToggleComplete}
         handleUpdateTask={handleUpdateTask}
         openDeleteModal={openDeleteModal}
+        onReorderTask={handleReorderTask}
       />
 
       <DeleteConfirmModal

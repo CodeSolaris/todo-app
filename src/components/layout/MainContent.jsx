@@ -9,6 +9,7 @@ export const MainContent = ({
   handleToggleComplete,
   handleUpdateTask,
   openDeleteModal,
+  onReorderTask,
 }) => {
   const [filter, setFilter] = useState("all");
   const filteredTasks = tasks.filter((task) => {
@@ -17,17 +18,23 @@ export const MainContent = ({
     if (filter === "completed") return task.completed;
     return true;
   });
+
   return (
-    <div className="mx-auto flex flex-col gap-3 max-w-xl w-full">
-      <Header />
-      <AddTodo onAddTodo={handleAddTodo} />
-      <TodoFilter filter={filter} setFilter={setFilter} />
-      <TodoList
-        tasks={filteredTasks}
-        openDeleteModal={openDeleteModal}
-        handleToggleComplete={handleToggleComplete}
-        handleUpdateTask={handleUpdateTask}
-      />
+    <div className="mx-auto flex flex-col gap-3 max-w-xl w-full h-full overflow-hidden">
+      <div className="flex flex-col gap-3 shrink-0">
+        <Header />
+        <AddTodo onAddTodo={handleAddTodo} />
+        <TodoFilter filter={filter} setFilter={setFilter} />
+      </div>
+      <div className="flex-1 overflow-y-auto pr-2">
+        <TodoList
+          tasks={filteredTasks}
+          openDeleteModal={openDeleteModal}
+          handleToggleComplete={handleToggleComplete}
+          handleUpdateTask={handleUpdateTask}
+          onReorderTask={onReorderTask}
+        />
+      </div>
     </div>
   );
 };

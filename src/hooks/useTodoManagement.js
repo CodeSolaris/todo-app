@@ -9,6 +9,7 @@ export const useTodoManagement = () => {
     updateTask,
     deleteTask,
     deleteCompletedTasks,
+    handleReorderTask,
   } = useTodosData();
 
   const {
@@ -40,6 +41,7 @@ export const useTodoManagement = () => {
     handleAddTodo: addTask,
     handleToggleComplete: toggleComplete,
     handleUpdateTask: updateTask,
+    handleReorderTask,
     // Modal controls
     confirmationModal,
     openDeleteModal,
