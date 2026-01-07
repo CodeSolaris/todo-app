@@ -62,7 +62,7 @@ export const TodoItem = memo(
       >
         <div
           {...(!isOverlay ? listeners : {})}
-          className={`px-4 shrink-0 flex items-center justify-center self-stretch -ml-3 -my-3 rounded-l-lg hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors ${
+          className={`px-4 shrink-0 flex items-center justify-center self-stretch -ml-3 -my-3 rounded-l-lg hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors touch-action-none ${
             isOverlay ? "cursor-grabbing" : "cursor-grab active:cursor-grabbing"
           }`}
         >

@@ -3,7 +3,8 @@ import {
   DndContext,
   closestCenter,
   DragOverlay,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -25,13 +26,20 @@ export const TodoList = ({ tasks }) => {
 
   const [activeId, setActiveId] = useState(null);
 
-  const pointerSensor = useSensor(PointerSensor, {
+  const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
-      distance: 5, // Slightly reduced for better responsiveness
+      distance: 10,
     },
   });
 
-  const sensors = useSensors(pointerSensor);
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   const handleDragStart = useCallback((event) => {
     setActiveId(event.active.id);

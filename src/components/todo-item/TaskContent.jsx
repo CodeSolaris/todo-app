@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { formatDateTime } from "../../helpers/dateUtils";
 
 const TimeDisplay = ({ date, label, isCompleted, isOverdueCheck = false }) => {
@@ -20,14 +21,29 @@ const TimeDisplay = ({ date, label, isCompleted, isOverdueCheck = false }) => {
 };
 
 export const TaskContent = ({ task, onDoubleClick }) => {
+  const lastTapRef = useRef(0);
+
+  const handleTouchEnd = () => {
+    const now = Date.now();
+    const delay = now - lastTapRef.current;
+
+    if (delay < 300 && delay > 0) {
+      onDoubleClick();
+      lastTapRef.current = 0;
+    } else {
+      lastTapRef.current = now;
+    }
+  };
+
   return (
     <div
-      className={`flex flex-col w-full gap-1 text-sm cursor-pointer ${
+      className={`flex flex-col w-full gap-1 text-sm cursor-pointer select-none ${
         task.completed
           ? "line-through text-gray-400"
           : "text-gray-700 dark:text-gray-300"
       }`}
       onDoubleClick={onDoubleClick}
+      onTouchEnd={handleTouchEnd}
     >
       <p className="leading-tight mb-4">{task.text}</p>
 
