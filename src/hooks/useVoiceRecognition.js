@@ -1,10 +1,14 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 
-const checkSpeechRecognitionSupport = () => "webkitSpeechRecognition" in window;
+const checkSpeechRecognitionSupport = () =>
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition ||
+  window.mozSpeechRecognition ||
+  window.msSpeechRecognition;
 
 export const useVoiceRecognition = ({ onTranscript, onStop }) => {
   const [isListening, setIsListening] = useState(false);
-  const [isSupported] = useState(checkSpeechRecognitionSupport);
+  const [isSupported] = useState(!!checkSpeechRecognitionSupport());
 
   const recognitionRef = useRef(null);
   const silenceTimeoutRef = useRef(null);
@@ -23,7 +27,9 @@ export const useVoiceRecognition = ({ onTranscript, onStop }) => {
   useEffect(() => {
     if (!isSupported) return;
 
-    const recognition = new window.webkitSpeechRecognition();
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "ru-RU";
