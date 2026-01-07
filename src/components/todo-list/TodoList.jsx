@@ -28,7 +28,7 @@ export const TodoList = ({
           <ul className="flex flex-col gap-3">
             {tasks.map((task) => (
               <TodoItem
-                key={task.localId || task.id}
+                key={task.id}
                 task={task}
                 onDelete={() => openDeleteModal(task.id)}
                 onToggleComplete={handleToggleComplete}
