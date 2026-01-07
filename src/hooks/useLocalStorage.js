@@ -1,15 +1,18 @@
 import { useCallback } from "react";
 import { STORAGE_KEY_TODOS } from "../constants/appConstants";
 
-export const useLocalStorage = () => {
+export const useLocalStorage = (key = STORAGE_KEY_TODOS) => {
   const getFromLocalStorage = useCallback(() => {
-    const item = localStorage.getItem(STORAGE_KEY_TODOS);
+    const item = localStorage.getItem(key);
     return item ? JSON.parse(item) : null;
-  }, []);
+  }, [key]);
 
-  const setToLocalStorage = useCallback((value) => {
-    localStorage.setItem(STORAGE_KEY_TODOS, JSON.stringify(value));
-  }, []);
+  const setToLocalStorage = useCallback(
+    (value) => {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    [key]
+  );
 
   return { getFromLocalStorage, setToLocalStorage };
 };

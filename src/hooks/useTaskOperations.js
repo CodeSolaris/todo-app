@@ -8,13 +8,31 @@ import {
   findTaskById,
   batchDeleteTasks,
 } from "../helpers/taskOperationHelpers";
+import { useOnlineStatus } from "./useOnlineStatus";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
+  const { isOnline } = useOnlineStatus();
+  const {
+    getFromLocalStorage: getPendingDeletes,
+    setToLocalStorage: setPendingDeletes,
+  } = useLocalStorage("pending_deleted_todos");
+
   const addTask = useCallback(
     async (text, deadline) => {
       const newTask = createTask(text, deadline, tasks);
-      const tempId = newTask.id;
 
+      if (!isOnline) {
+        setTasks((prevTasks) => {
+          const offlineTask = { ...newTask, synced: false };
+          const updatedTasks = [...prevTasks, offlineTask];
+          setToLocalStorage(updatedTasks);
+          return updatedTasks;
+        });
+        return;
+      }
+
+      const tempId = newTask.id;
       setTasks((prevTasks) => [...prevTasks, newTask]);
 
       try {
@@ -29,13 +47,23 @@ export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
         setTasks((prevTasks) => removeTaskById(prevTasks, tempId));
       }
     },
-    [tasks, setTasks, setToLocalStorage]
+    [tasks, setTasks, setToLocalStorage, isOnline]
   );
 
   const performUpdate = useCallback(
     async (id, updates) => {
       const task = findTaskById(tasks, id);
       if (!task) return;
+
+      if (!isOnline) {
+        const updatedTasks = updateTaskById(tasks, id, {
+          ...updates,
+          synced: false,
+        });
+        setTasks(updatedTasks);
+        setToLocalStorage(updatedTasks);
+        return;
+      }
 
       const updatedTasks = updateTaskById(tasks, id, updates);
       setTasks(updatedTasks);
@@ -49,7 +77,7 @@ export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
         setTasks(tasks);
       }
     },
-    [tasks, setTasks, setToLocalStorage]
+    [tasks, setTasks, setToLocalStorage, isOnline]
   );
 
   const toggleComplete = useCallback(
@@ -71,6 +99,18 @@ export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
 
   const deleteTask = useCallback(
     async (id) => {
+      if (!isOnline) {
+        const updatedTasks = removeTaskById(tasks, id);
+        setTasks(updatedTasks);
+        setToLocalStorage(updatedTasks);
+
+        const pending = getPendingDeletes() || [];
+        if (!pending.includes(id)) {
+          setPendingDeletes([...pending, id]);
+        }
+        return;
+      }
+
       const previousTasks = [...tasks];
       const updatedTasks = removeTaskById(tasks, id);
       setTasks(updatedTasks);
@@ -83,10 +123,29 @@ export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
         setTasks(previousTasks);
       }
     },
-    [tasks, setTasks, setToLocalStorage]
+    [
+      tasks,
+      setTasks,
+      setToLocalStorage,
+      isOnline,
+      getPendingDeletes,
+      setPendingDeletes,
+    ]
   );
 
   const deleteCompletedTasks = useCallback(async () => {
+    if (!isOnline) {
+      const { completed, active } = partitionTasksByCompleted(tasks);
+      setTasks(active);
+      setToLocalStorage(active);
+
+      const ids = completed.map((t) => t.id);
+      const pending = getPendingDeletes() || [];
+      const newPending = [...new Set([...pending, ...ids])];
+      setPendingDeletes(newPending);
+      return;
+    }
+
     const previousTasks = [...tasks];
     const { completed: tasksToDelete, active: updatedTasks } =
       partitionTasksByCompleted(tasks);
@@ -100,7 +159,14 @@ export const useTaskOperations = (tasks, setTasks, setToLocalStorage) => {
       console.error("Error during batch delete:", error);
       setTasks(previousTasks);
     }
-  }, [tasks, setTasks, setToLocalStorage]);
+  }, [
+    tasks,
+    setTasks,
+    setToLocalStorage,
+    isOnline,
+    getPendingDeletes,
+    setPendingDeletes,
+  ]);
 
   return {
     addTask,
