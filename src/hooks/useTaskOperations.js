@@ -1,13 +1,14 @@
 import { useCallback } from "react";
 import { todoService } from "../services/todoService";
-import { createTask, updateTaskById } from "../helpers/taskHelpers";
-import { replaceTempId } from "../helpers/taskSyncHelpers";
 import {
+  createTask,
+  updateTaskById,
+  replaceTempId,
   partitionTasksByCompleted,
   removeTaskById,
   findTaskById,
   batchDeleteTasks,
-} from "../helpers/taskOperationHelpers";
+} from "../helpers/taskUtils";
 import { useOnlineStatus } from "./useOnlineStatus";
 import { useLocalStorage } from "./useLocalStorage";
 

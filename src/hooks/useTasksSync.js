@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
 import { todoService } from "../services/todoService";
-import { sortTasks } from "../helpers/taskHelpers";
 import {
+  sortTasks,
   reorderTasks,
   findChangedTasks,
   syncTasksToServer,
-} from "../helpers/taskSyncHelpers";
+} from "../helpers/taskUtils";
 
 export const useTasksSync = (tasks, setTasks, setToLocalStorage) => {
   const isSyncingRef = useRef(false);

@@ -1,6 +1,6 @@
 import { useTheme } from "../../hooks/useTheme";
 
-const ToggleTheme = () => {
+export const ToggleTheme = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -17,5 +17,3 @@ const ToggleTheme = () => {
     </div>
   );
 };
-
-export default ToggleTheme;

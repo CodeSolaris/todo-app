@@ -1,6 +1,6 @@
 import { useTheme } from "./hooks/useTheme";
 import { useTodo } from "./hooks/useTodo";
-import ToggleTheme from "./components/layout/ToggleTheme";
+import { ToggleTheme } from "./components/layout/ToggleTheme";
 import { DeleteConfirmModal } from "./components/ui/DeleteConfirmModal";
 import { DeleteCompletedButton } from "./components/todo-list/DeleteCompletedButton";
 import { MainContent } from "./components/layout/MainContent";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { todoService } from "../services/todoService";
 import { useLocalStorage } from "./useLocalStorage";
-import { sortTasks, sanitizeTasks } from "../helpers/taskHelpers";
+import { sortTasks, sanitizeTasks } from "../helpers/taskUtils";
 import { useTaskOperations } from "./useTaskOperations";
 import { useTasksSync } from "./useTasksSync";
 import { useOnlineStatus } from "./useOnlineStatus";
