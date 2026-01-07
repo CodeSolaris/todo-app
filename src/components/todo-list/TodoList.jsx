@@ -4,13 +4,16 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-export const TodoList = ({
-  tasks,
-  openDeleteModal,
-  handleToggleComplete,
-  handleUpdateTask,
-  onReorderTask,
-}) => {
+import { useTodo } from "../../hooks/useTodo";
+
+export const TodoList = ({ tasks }) => {
+  const {
+    handleReorderTask: onReorderTask,
+    openDeleteModal,
+    handleToggleComplete,
+    handleUpdateTask,
+  } = useTodo();
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (!over || active.id !== over.id) {

@@ -1,8 +1,12 @@
-const ToggleTheme = ({ theme, onToggle }) => {
+import { useTheme } from "../../hooks/useTheme";
+
+const ToggleTheme = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="mb-6 ">
       <div className="absolute top-6 right-6 flex items-center cursor-pointer">
-        <button className="relative cursor-pointer" onClick={onToggle}>
+        <button className="relative cursor-pointer" onClick={toggleTheme}>
           <div className="w-14 h-7 rounded-full shadow-inner transition-colors duration-300 bg-gray-300 dark:bg-btn-dark"></div>
           <div className="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 translate-x-0 dark:translate-x-7"></div>
         </button>

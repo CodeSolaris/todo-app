@@ -3,8 +3,10 @@ import { TodoTextInput } from "./TodoTextInput";
 import { DeadlineSelector } from "./DeadlineSelector";
 import { MicrophoneButton } from "./MicrophoneButton";
 import { useVoiceRecognition } from "../../hooks/useVoiceRecognition";
+import { useTodo } from "../../hooks/useTodo";
 
-export const AddTodo = ({ onAddTodo }) => {
+export const AddTodo = () => {
+  const { handleAddTodo: onAddTodo } = useTodo();
   const [text, setText] = useState("");
   const [deadline, setDeadline] = useState("");
   const [showDeadlineInput, setShowDeadlineInput] = useState(false);
