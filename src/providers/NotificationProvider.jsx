@@ -6,13 +6,13 @@ export const NotificationProvider = ({ children }) => {
 
   const showNotification = useCallback((message, type = "info") => {
     setNotifications((prev) => {
-      // ПРОВЕРКА: Если такое же сообщение уже отображается, не добавляем дубликат
+      // CHECK: If the same message is already displayed, don't add a duplicate
       if (prev.some((n) => n.message === message && n.type === type))
         return prev;
 
       const id = `${Date.now()}-${Math.random()}`;
 
-      // Автоматическое удаление через 4 секунды
+      // Automatic removal after 4 seconds
       setTimeout(() => {
         setNotifications((current) => current.filter((n) => n.id !== id));
       }, 4000);

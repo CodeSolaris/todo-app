@@ -32,7 +32,7 @@ export const useTodosData = () => {
   useEffect(() => {
     const syncAndFetch = async () => {
       if (!isOnline) {
-        showNotification("Работаем в оффлайн-режиме", "info");
+        showNotification("Working in offline mode", "info");
         return;
       }
 
@@ -46,7 +46,7 @@ export const useTodosData = () => {
           pendingDeletes.length > 0;
 
         if (hasUnsynced) {
-          showNotification("Синхронизация данных...", "info");
+          showNotification("Syncing data...", "info");
         }
 
         // 1. Sync pending deletes
@@ -81,7 +81,7 @@ export const useTodosData = () => {
         );
 
         if (hasUnsynced) {
-          showNotification("Данные синхронизированы", "success");
+          showNotification("Data synchronized", "success");
         }
 
         // 3. Fetch latest from server
@@ -92,7 +92,7 @@ export const useTodosData = () => {
         setToLocalStorage(sortedTasks);
       } catch (error) {
         console.error("Error syncing/loading todos:", error);
-        showNotification("Ошибка при синхронизации", "error");
+        showNotification("Error during synchronization", "error");
       }
     };
 

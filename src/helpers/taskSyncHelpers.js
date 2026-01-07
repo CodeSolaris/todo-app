@@ -1,4 +1,4 @@
-// Вычисляет новый порядок задач после перетаскивания
+// Calculates new task order after dragging
 export const reorderTasks = (tasks, activeIndex, overIndex) => {
   if (activeIndex === overIndex || activeIndex === -1 || overIndex === -1) {
     return null;
@@ -14,7 +14,7 @@ export const reorderTasks = (tasks, activeIndex, overIndex) => {
   }));
 };
 
-// Находит задачи, у которых изменился order
+// Finds tasks where order has changed
 export const findChangedTasks = (updatedTasks, originalTasks) => {
   return updatedTasks.filter((task) => {
     const originalTask = originalTasks.find((t) => t.id === task.id);
@@ -22,7 +22,7 @@ export const findChangedTasks = (updatedTasks, originalTasks) => {
   });
 };
 
-// Синхронизирует задачи с сервером с задержкой между запросами
+// Synchronizes tasks with the server with a delay between requests
 export const syncTasksToServer = async (tasks, todoService, delay = 300) => {
   for (const task of tasks) {
     if (String(task.id).startsWith("temp_")) continue;
@@ -35,7 +35,7 @@ export const syncTasksToServer = async (tasks, todoService, delay = 300) => {
   }
 };
 
-// Заменяет временный ID на серверный
+// Replaces temporary ID with server ID
 export const replaceTempId = (tasks, tempId, serverTask) => {
   return tasks.map((task) => (task.id === tempId ? serverTask : task));
 };

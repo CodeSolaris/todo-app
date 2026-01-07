@@ -1,7 +1,7 @@
 import micIcon from "../../assets/mic.png";
 
 export const MicrophoneButton = ({ isListening, onToggle, disabled }) => {
-  const title = isListening ? "Остановить запись" : "Начать запись";
+  const title = isListening ? "Stop recording" : "Start recording";
 
   return (
     <button
