@@ -11,7 +11,11 @@ export const DateInput = ({
       value={value}
       onChange={onChange}
       onKeyDown={onKeyDown}
-      className={`p-2 text-sm rounded-md border border-gray-200 dark:border-gray-600 bg-transparent text-gray-700 dark:text-txt-dark outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer ${className}`}
+      style={{
+        colorScheme:
+          document.documentElement.dataset.theme === "dark" ? "dark" : "light",
+      }}
+      className={`p-3 text-base sm:text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-txt-dark outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer ${className}`}
       {...props}
     />
   );

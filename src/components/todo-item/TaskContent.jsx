@@ -14,8 +14,12 @@ const TimeDisplay = ({ date, label, isCompleted, isOverdueCheck = false }) => {
     : "text-gray-500";
 
   return (
-    <time dateTime={date} className={`text-sm ${textColor}`}>
-      {label}: {formatDateTime(date)}
+    <time
+      dateTime={date}
+      className={`text-inherit ${textColor} flex gap-1 items-baseline whitespace-nowrap`}
+    >
+      <span className="opacity-70 font-medium">{label}:</span>
+      <span>{formatDateTime(date, true)}</span>
     </time>
   );
 };
@@ -37,7 +41,7 @@ export const TaskContent = ({ task, onDoubleClick }) => {
 
   return (
     <div
-      className={`flex flex-col w-full gap-1 text-sm cursor-pointer select-none ${
+      className={`flex flex-col w-full gap-0.5 text-sm cursor-pointer select-none pt-1 ${
         task.completed
           ? "line-through text-gray-400"
           : "text-gray-700 dark:text-gray-300"
@@ -45,20 +49,26 @@ export const TaskContent = ({ task, onDoubleClick }) => {
       onDoubleClick={onDoubleClick}
       onTouchEnd={handleTouchEnd}
     >
-      <p className="leading-tight mb-4">{task.text}</p>
+      <p className="leading-snug mb-1 font-medium wrap-break-word">
+        {task.text}
+      </p>
 
-      <TimeDisplay
-        date={task.createdAt}
-        label="Created"
-        isCompleted={task.completed}
-      />
+      <div className="flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-0.5 mt-1 text-[10px] sm:text-[11px] opacity-60">
+        <TimeDisplay
+          date={task.createdAt}
+          label="Created"
+          isCompleted={task.completed}
+        />
 
-      <TimeDisplay
-        date={task.deadline}
-        label="Due by"
-        isCompleted={task.completed}
-        isOverdueCheck={true}
-      />
+        {task.deadline && (
+          <TimeDisplay
+            date={task.deadline}
+            label="Due"
+            isCompleted={task.completed}
+            isOverdueCheck={true}
+          />
+        )}
+      </div>
 
       {task.synced === false && (
         <div

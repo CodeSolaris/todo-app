@@ -55,28 +55,27 @@ export const AddTodo = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6">
-      <div className="flex gap-3 items-start ml-2">
-        {isSupported && (
-          <MicrophoneButton
-            isListening={isListening}
-            onToggle={handleVoiceToggle}
-          />
-        )}
+    <form onSubmit={handleSubmit} className="mb-6 px-1">
+      <div className="flex flex-col">
+        <TodoTextInput
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          disabled={isListening}
+        >
+          {isSupported && (
+            <MicrophoneButton
+              isListening={isListening}
+              onToggle={handleVoiceToggle}
+            />
+          )}
+        </TodoTextInput>
 
-        <div className="flex-1">
-          <TodoTextInput
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            disabled={isListening}
-          />
-          <DeadlineSelector
-            deadline={deadline}
-            setDeadline={setDeadline}
-            showDeadlineInput={showDeadlineInput}
-            setShowDeadlineInput={setShowDeadlineInput}
-          />
-        </div>
+        <DeadlineSelector
+          deadline={deadline}
+          setDeadline={setDeadline}
+          showDeadlineInput={showDeadlineInput}
+          setShowDeadlineInput={setShowDeadlineInput}
+        />
       </div>
     </form>
   );

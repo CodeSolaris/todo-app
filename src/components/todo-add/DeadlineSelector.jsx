@@ -1,5 +1,6 @@
 import { DateInput } from "../ui/DateInput";
 import { Button } from "../ui/Button";
+import { PlusIcon } from "../icons/PlusIcon";
 
 export const DeadlineSelector = ({
   deadline,
@@ -9,43 +10,45 @@ export const DeadlineSelector = ({
 }) => {
   if (!showDeadlineInput) {
     return (
-      <Button
-        variant="link"
+      <button
+        type="button"
         onClick={() => setShowDeadlineInput(true)}
-        className="mt-2 text-md"
+        className="mt-2 text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1.5 px-1 py-1"
       >
+        <PlusIcon className="w-4 h-4" />
         Add deadline
-      </Button>
+      </button>
     );
   }
 
   return (
-    <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-3">
-      <label
-        htmlFor="deadline-input"
-        className="text-sm text-gray-700 dark:text-txt-dark whitespace-nowrap"
-      >
-        Deadline:
-      </label>
+    <div className="mt-2 flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-2 duration-300">
+      <div className="flex items-center justify-between px-1">
+        <label
+          htmlFor="deadline-input"
+          className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+        >
+          Select Deadline:
+        </label>
+        <button
+          type="button"
+          onClick={() => {
+            setDeadline("");
+            setShowDeadlineInput(false);
+          }}
+          className="text-xs text-red-500 hover:text-red-600 font-medium"
+        >
+          Clear & Close
+        </button>
+      </div>
 
       <DateInput
         id="deadline-input"
         name="deadline"
         value={deadline}
         onChange={(e) => setDeadline(e.target.value)}
-        className="flex-1"
+        className="w-full shadow-sm"
       />
-
-      <Button
-        variant="text"
-        onClick={() => {
-          setDeadline("");
-          setShowDeadlineInput(false);
-        }}
-        className="text-sm px-2"
-      >
-        Cancel
-      </Button>
     </div>
   );
 };

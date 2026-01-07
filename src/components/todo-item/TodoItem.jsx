@@ -53,7 +53,7 @@ export const TodoItem = memo(
           opacity: 1,
         }}
         exit={{ opacity: 0, scale: 0.8, x: -20, transition: { duration: 0.2 } }}
-        className={`group flex items-center justify-between gap-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 shadow-sm transition-shadow duration-300 ${
+        className={`group flex items-center justify-between gap-3 sm:gap-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 sm:p-3 shadow-sm transition-shadow duration-300 ${
           isOverlay ? "cursor-grabbing" : ""
         }`}
         ref={setNodeRef}
@@ -69,7 +69,7 @@ export const TodoItem = memo(
           <div className="h-6 w-4 border-l-4 border-r-4 border-gray-200 dark:border-gray-600 border-dotted"></div>
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 text-center flex items-center">
           <ToggleCompleteButton
             isCompleted={task.completed}
             onToggle={() => onToggleComplete(task.id)}
