@@ -1,7 +1,7 @@
 import { PlusIcon } from "../icons/PlusIcon";
 import { Button } from "../ui/Button";
 
-export const TodoTextInput = ({ value, onChange }) => {
+export const TodoTextInput = ({ value, onChange, disabled }) => {
   return (
     <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
       <input
@@ -14,7 +14,8 @@ export const TodoTextInput = ({ value, onChange }) => {
 
       <Button
         type="submit"
-        className="p-3 bg-btn-light hover:bg-btn-light-hv text-white dark:bg-btn-dark hover:dark:bg-btn-dark-hv rounded-none"
+        disabled={disabled}
+        className="p-3 w-12 h-12 bg-btn-light hover:bg-btn-light-hv text-white dark:bg-btn-dark hover:dark:bg-btn-dark-hv rounded-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none flex items-center justify-center"
       >
         <PlusIcon />
       </Button>
