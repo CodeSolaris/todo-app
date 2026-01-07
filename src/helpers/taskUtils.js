@@ -8,20 +8,26 @@
 const generateTempId = () =>
   `temp_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
-export const createTask = (text, deadline, currentTasks) => ({
-  id: generateTempId(),
-  text,
-  completed: false,
-  createdAt: new Date().toISOString(),
-  deadline: deadline || null,
-  order: Math.max(0, ...currentTasks.map((t) => t.order || 0)) + 1,
-});
+export const createTask = (text, deadline, currentTasks) => {
+  const tempId = generateTempId();
+  return {
+    id: tempId,
+    clientId: tempId, // Stable key for animations
+    text,
+    completed: false,
+    createdAt: new Date().toISOString(),
+    deadline: deadline || null,
+    order: Math.max(0, ...currentTasks.map((t) => t.order || 0)) + 1,
+  };
+};
 
 export const updateTaskById = (tasks, id, updates) =>
   tasks.map((task) => (task.id === id ? { ...task, ...updates } : task));
 
 export const replaceTempId = (tasks, tempId, serverTask) =>
-  tasks.map((task) => (task.id === tempId ? serverTask : task));
+  tasks.map((task) =>
+    task.id === tempId ? { ...serverTask, clientId: task.clientId } : task
+  );
 
 // --- Identification & Search ---
 

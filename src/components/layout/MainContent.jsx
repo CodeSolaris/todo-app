@@ -4,6 +4,7 @@ import { TodoFilter } from "../todo-list/TodoFilter";
 import { useState, lazy, Suspense, useMemo } from "react";
 import { Spinner } from "../ui/Spinner";
 import { useTodo } from "../../hooks/useTodo";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 
 // Lazy load TodoList
 const TodoList = lazy(() =>
@@ -32,9 +33,19 @@ export const MainContent = () => {
         <AddTodo />
         <TodoFilter filter={filter} setFilter={setFilter} />
       </div>
-      <div className="flex-1 overflow-y-auto pr-2">
+      <div className="flex-1 overflow-y-auto no-scrollbar">
         <Suspense fallback={<Spinner />}>
-          <TodoList tasks={filteredTasks} />
+          <AnimatePresence mode="wait">
+            <Motion.div
+              key={filter}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <TodoList tasks={filteredTasks} />
+            </Motion.div>
+          </AnimatePresence>
         </Suspense>
       </div>
     </div>
