@@ -41,4 +41,17 @@
       box-shadow: 0 0 0 4px rgba(220, 38, 38, 0);
     }
   }
+
+  --animate-slide-in: slide-in 0.3s ease-out forwards;
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 }

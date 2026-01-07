@@ -5,9 +5,11 @@ import { sortTasks } from "../helpers/taskHelpers";
 import { useTaskOperations } from "./useTaskOperations";
 import { useTasksSync } from "./useTasksSync";
 import { useOnlineStatus } from "./useOnlineStatus";
+import { useNotification } from "./useNotification";
 
 export const useTodosData = () => {
   const { isOnline } = useOnlineStatus();
+  const { showNotification } = useNotification();
   const { getFromLocalStorage, setToLocalStorage } = useLocalStorage();
   const {
     getFromLocalStorage: getPendingDeletes,
@@ -29,13 +31,25 @@ export const useTodosData = () => {
   // Sync and fetch on online/reconnect
   useEffect(() => {
     const syncAndFetch = async () => {
-      if (!isOnline) return;
+      if (!isOnline) {
+        showNotification("Работаем в оффлайн-режиме", "info");
+        return;
+      }
 
       if (isSyncingRef.current) return;
 
       try {
-        // 1. Sync pending deletes
         const pendingDeletes = getPendingDeletes() || [];
+        const localTasks = getFromLocalStorage() || [];
+        const hasUnsynced =
+          localTasks.some((t) => t.synced === false) ||
+          pendingDeletes.length > 0;
+
+        if (hasUnsynced) {
+          showNotification("Синхронизация данных...", "info");
+        }
+
+        // 1. Sync pending deletes
         if (pendingDeletes.length > 0) {
           await Promise.all(
             pendingDeletes.map((id) =>
@@ -46,10 +60,8 @@ export const useTodosData = () => {
         }
 
         // 2. Sync pending additions/updates
-        const currentLocalTasks = getFromLocalStorage() || [];
-
         await Promise.all(
-          currentLocalTasks.map(async (task) => {
+          localTasks.map(async (task) => {
             if (task.synced === false) {
               const cleanTask = { ...task };
               delete cleanTask.synced;
@@ -68,6 +80,10 @@ export const useTodosData = () => {
           })
         );
 
+        if (hasUnsynced) {
+          showNotification("Данные синхронизированы", "success");
+        }
+
         // 3. Fetch latest from server
         const serverTasks = await todoService.getAll();
         const sortedTasks = sortTasks(serverTasks);
@@ -76,6 +92,7 @@ export const useTodosData = () => {
         setToLocalStorage(sortedTasks);
       } catch (error) {
         console.error("Error syncing/loading todos:", error);
+        showNotification("Ошибка при синхронизации", "error");
       }
     };
 
@@ -87,6 +104,7 @@ export const useTodosData = () => {
     getPendingDeletes,
     setPendingDeletes,
     isSyncingRef,
+    showNotification,
   ]);
 
   return {
