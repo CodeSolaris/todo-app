@@ -18,3 +18,23 @@ export const createTask = (text, deadline, currentTasks) => ({
 
 export const updateTaskById = (tasks, id, updates) =>
   tasks.map((task) => (task.id === id ? { ...task, ...updates } : task));
+
+/**
+ * Validates if an object matches the Task schema.
+ */
+export const isValidTask = (task) => {
+  return (
+    task &&
+    (typeof task.id === "string" || typeof task.id === "number") &&
+    typeof task.text === "string" &&
+    typeof task.completed === "boolean"
+  );
+};
+
+/**
+ * Filters out invalid tasks and ensures the result is an array.
+ */
+export const sanitizeTasks = (data) => {
+  if (!Array.isArray(data)) return [];
+  return data.filter(isValidTask);
+};

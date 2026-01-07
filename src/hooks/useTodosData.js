@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { todoService } from "../services/todoService";
 import { useLocalStorage } from "./useLocalStorage";
-import { sortTasks } from "../helpers/taskHelpers";
+import { sortTasks, sanitizeTasks } from "../helpers/taskHelpers";
 import { useTaskOperations } from "./useTaskOperations";
 import { useTasksSync } from "./useTasksSync";
 import { useOnlineStatus } from "./useOnlineStatus";
@@ -18,7 +18,8 @@ export const useTodosData = () => {
 
   const [tasks, setTasks] = useState(() => {
     const saved = getFromLocalStorage();
-    return saved && Array.isArray(saved) ? sortTasks(saved) : [];
+    const sanitized = sanitizeTasks(saved);
+    return sortTasks(sanitized);
   });
 
   const operations = useTaskOperations(tasks, setTasks, setToLocalStorage);
@@ -86,7 +87,8 @@ export const useTodosData = () => {
 
         // 3. Fetch latest from server
         const serverTasks = await todoService.getAll();
-        const sortedTasks = sortTasks(serverTasks);
+        const sanitizedServerTasks = sanitizeTasks(serverTasks);
+        const sortedTasks = sortTasks(sanitizedServerTasks);
 
         setTasks(sortedTasks);
         setToLocalStorage(sortedTasks);
