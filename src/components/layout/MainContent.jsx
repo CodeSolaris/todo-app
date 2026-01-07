@@ -1,8 +1,16 @@
 import { AddTodo } from "../todo-add/AddTodo";
 import { Header } from "./Header";
-import { TodoList } from "../todo-list/TodoList";
 import { TodoFilter } from "../todo-list/TodoFilter";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+import { Spinner } from "../ui/Spinner";
+
+// Lazy load TodoList
+const TodoList = lazy(() =>
+  import("../todo-list/TodoList").then((module) => ({
+    default: module.TodoList,
+  }))
+);
+
 export const MainContent = ({
   tasks,
   handleAddTodo,
@@ -27,13 +35,15 @@ export const MainContent = ({
         <TodoFilter filter={filter} setFilter={setFilter} />
       </div>
       <div className="flex-1 overflow-y-auto pr-2">
-        <TodoList
-          tasks={filteredTasks}
-          openDeleteModal={openDeleteModal}
-          handleToggleComplete={handleToggleComplete}
-          handleUpdateTask={handleUpdateTask}
-          onReorderTask={onReorderTask}
-        />
+        <Suspense fallback={<Spinner />}>
+          <TodoList
+            tasks={filteredTasks}
+            openDeleteModal={openDeleteModal}
+            handleToggleComplete={handleToggleComplete}
+            handleUpdateTask={handleUpdateTask}
+            onReorderTask={onReorderTask}
+          />
+        </Suspense>
       </div>
     </div>
   );

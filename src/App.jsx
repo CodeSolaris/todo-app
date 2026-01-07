@@ -6,6 +6,7 @@ import { DeleteConfirmModal } from "./components/ui/DeleteConfirmModal";
 import { useTodoManagement } from "./hooks/useTodoManagement";
 import { DeleteCompletedButton } from "./components/todo-list/DeleteCompletedButton";
 import { MainContent } from "./components/layout/MainContent";
+
 export function App() {
   const [theme, setTheme] = useState(getInitialTheme());
   const {
