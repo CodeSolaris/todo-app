@@ -1,7 +1,7 @@
 import { AddTodo } from "../todo-add/AddTodo";
 import { Header } from "./Header";
 import { TodoFilter } from "../todo-list/TodoFilter";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useMemo } from "react";
 import { Spinner } from "../ui/Spinner";
 import { useTodo } from "../../hooks/useTodo";
 
@@ -15,12 +15,15 @@ const TodoList = lazy(() =>
 export const MainContent = () => {
   const { tasks } = useTodo();
   const [filter, setFilter] = useState("all");
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "all") return true;
-    if (filter === "active") return !task.completed;
-    if (filter === "completed") return task.completed;
-    return true;
-  });
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      if (filter === "all") return true;
+      if (filter === "active") return !task.completed;
+      if (filter === "completed") return task.completed;
+      return true;
+    });
+  }, [tasks, filter]);
 
   return (
     <div className="mx-auto flex flex-col gap-3 max-w-xl w-full h-full overflow-hidden">

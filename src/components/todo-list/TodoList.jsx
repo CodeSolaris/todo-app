@@ -5,6 +5,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useTodo } from "../../hooks/useTodo";
+import { useMemo, useCallback } from "react";
 
 export const TodoList = ({ tasks }) => {
   const {
@@ -14,13 +15,18 @@ export const TodoList = ({ tasks }) => {
     handleUpdateTask,
   } = useTodo();
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-    if (!over || active.id !== over.id) {
-      onReorderTask(active.id, over.id);
-    }
-  };
-  const TasksIds = tasks.map((task) => task.id);
+  const handleDragEnd = useCallback(
+    (event) => {
+      const { active, over } = event;
+      if (!over || active.id !== over.id) {
+        onReorderTask(active.id, over.id);
+      }
+    },
+    [onReorderTask]
+  );
+
+  const TasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
+
   return (
     <>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -33,7 +39,7 @@ export const TodoList = ({ tasks }) => {
               <TodoItem
                 key={task.id}
                 task={task}
-                onDelete={() => openDeleteModal(task.id)}
+                onDelete={openDeleteModal}
                 onToggleComplete={handleToggleComplete}
                 onUpdateTask={handleUpdateTask}
               />
